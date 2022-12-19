@@ -23,25 +23,26 @@ impl Vm {
 
 		// Decore our file input from bitpack::getu that will retrieve an unsigned value 
 		//from `word`, represented by `width` bits beginning at least-significant bit `lsb`.
-		let opcode: u8 = bitpack::bitpack::getu(word.into(), 4, 28).try_into().unwrap();
-		let word_u32: u32 = word.try_into().unwrap();
+		// let opcode: u8 = bitpack::bitpack::getu(word.into(), 4, 28).try_into().unwrap();
+		// let word_u32: u32 = word.try_into().unwrap();
+		let opcode = (word >> 28) & (1 << 4) - 1;
 
 		// Excecute our Opcode conditions with the word of u32 bit
 		match opcode {
-			0 =>  cond_move(self, word_u32),
-			1 =>  seg_load(self, word_u32),
-			2 =>  seg_store(self, word_u32),
-			3 =>  add(self, word_u32),
-			4 =>  mul(self, word_u32),
-			5 =>  div(self, word_u32),
-			6 =>  nand(self, word_u32),
+			0 =>  cond_move(self, word),
+			1 =>  seg_load(self, word),
+			2 =>  seg_store(self, word),
+			3 =>  add(self, word),
+			4 =>  mul(self, word),
+			5 =>  div(self, word),
+			6 =>  nand(self, word),
 			7 =>  halt(self),
-			8 =>  map_seg(self, word_u32),
-			9 =>  unmap_seg(self, word_u32),
-			10 => output(self, word_u32),
-			11 => input(self, word_u32),
-			12 => load_prog(self, word_u32),
-			13 => load_val(self, word_u32),
+			8 =>  map_seg(self, word),
+			9 =>  unmap_seg(self, word),
+			10 => output(self, word),
+			11 => input(self, word),
+			12 => load_prog(self, word),
+			13 => load_val(self, word),
 			 _ => panic!("Error")
 
 		};
